@@ -1,0 +1,13 @@
+{
+  "name": "finito",
+  "description": "Closes a working session with a summary you can read and a handoff block the next session resumes from.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Mun1to",
+    "url": "https://github.com/Mun1to"
+  },
+  "homepage": "https://github.com/Mun1to/Finito",
+  "repository": "https://github.com/Mun1to/Finito",
+  "license": "MIT",
+  "keywords": ["session", "handoff", "context", "compact", "summary", "workflow"]
+}
