@@ -2,10 +2,11 @@
 name: finito
 description: >-
   Closes a working session with a coding agent and produces the full closing package: a
-  numbered summary anyone can read, the next steps, the real state of the repository, and a
-  handoff block ready to paste after /compact or at the start of a fresh session. Use it when
-  the user says "let's wrap up", "close the session", "summarise what we did", "give me the
-  next steps", "I'm about to compact", "I'm leaving it here for today", or runs /finito.
+  numbered summary anyone can read, the next steps, what got written down, the real state of
+  the repository including what is left to push, and two blocks the next session resumes from,
+  one to paste after /compact and one to open a fresh session tomorrow. Use it when the user
+  says "let's wrap up", "close the session", "summarise what we did", "give me the next
+  steps", "I'm about to compact", "I'm leaving it here for today", or runs /finito.
 ---
 
 # Finito, the end of a working session
@@ -21,8 +22,8 @@ readers and mixing them ruins both.
 
 - **The summary and the next steps** are for the person: short, plain, no jargon, readable on
   a phone. What cannot be understood is not useful.
-- **The handoff block** is for the next agent: dense, exact file paths, decisions and their
-  reasons, real state. Vagueness here becomes lost context forever.
+- **The handoff and the resume block** are for the next agent: dense, exact file paths,
+  decisions and their reasons, real state. Vagueness here becomes lost context forever.
 
 ## Step 1. Take inventory before writing a single line
 
@@ -31,6 +32,10 @@ run `git status` plus `git log --oneline -10` in the active project. The closing
 reflect what actually happened and the real state of the repository, not what you vaguely
 remember. Memory of a long session is optimistic: it remembers intentions as if they were
 outcomes.
+
+Count what is committed but not pushed as well, with `git log --oneline @{u}..HEAD`. If the
+branch has no upstream, say exactly that: a branch nobody has ever pushed is a branch that
+only exists on this machine, and that is worth one line of warning.
 
 Three hard rules for this step:
 
@@ -45,12 +50,21 @@ Some of what happened today lives nowhere but in this conversation, and disappea
 context does. Before answering, put it where it survives:
 
 - **Project documents.** If decisions were made, or a goal moved, or something broke in an
-  interesting way, write it where the project already writes those things. Only what is
-  missing: if it was already written during the session, do not write it twice.
+  interesting way, write it where the project already writes those things: the changelog and
+  the version if something shipped, the decision record if the project keeps one, the file
+  other people or other sessions read to know what changed under them. Only what is missing:
+  if it was already written during the session, do not write it twice.
+- **The agent's own context file**, `AGENTS.md` or `CLAUDE.md`, when the session changed
+  something a tool will need tomorrow: a new command, a moved folder, a convention that was
+  agreed today. This is the one that silently rots, because nobody notices it is stale until
+  an agent acts on it.
 - **Persistent memory**, if the agent has one. Durable facts only: decisions with weight,
   how the person wants to be worked with, gotchas that cost time to discover, changes of
   direction. Before creating a new entry, check whether an existing one already covers the
   topic and update that one instead of duplicating.
+
+Do all of this before writing the answer, not after. Once the context is compacted the detail
+is gone, and a document written from a summary is a document full of guesses.
 
 Do not save what the repository already records. Code, commits and documentation are already
 written down: memory is for what cannot be worked out from them. If there is nothing new
@@ -77,17 +91,26 @@ no preamble.
 to save".>
 
 ## Handoff
-<code block, see below>
+<code block, to paste after /compact, see step 4>
+
+## Resume
+<code block, to open a fresh session tomorrow, see step 5>
 ```
 
-Close with one line about the repository if anything is uncommitted or unpushed, and ask.
+Close with one line about the repository, always, even when there is nothing pending: what is
+uncommitted, how many commits are unpushed, and ask whether to handle it. "Everything is
+committed and pushed" is information too, and a closing that says nothing leaves the person
+guessing whether it looked at all.
+
 Never commit and never push on your own at the end of a session: a closing that silently
-publishes is a closing nobody can trust.
+publishes is a closing nobody can trust. The working tree may hold somebody else's work, and
+a push sends the whole branch, not only what you touched.
 
 ## Step 4. The handoff block
 
-Inside a code block, so it can be copied in one click and pasted after `/compact` or into the
-first message of a new session.
+Inside a code block, so it can be copied in one click and pasted right after `/compact`. This
+one is for a conversation that is still alive but has just been compressed, so it is about
+what happened today and what is still open.
 
 ```
 # HANDOFF, <project> session, <date>
@@ -120,6 +143,29 @@ cannot, it goes in.
 The `Gotchas` section is the one everybody skips and the one that pays for itself. A bug
 already solved, solved again from scratch, is the most expensive thing in a long project.
 
+## Step 5. The resume block
+
+Different job, which is why both are written. The handoff assumes the conversation is still
+there; this one is pasted cold, days later, in a new window or in a different tool entirely,
+where nothing of today survives. So it starts from where the project is, not from what was
+done, and it is short: if it is longer than the handoff, half of it is filler.
+
+It is written in the first person, as if the user were dictating it, so it can be pasted as
+the first message of a new session without editing anything.
+
+```
+# RESUME, <project> (saved <date>)
+
+Picking this back up. Before proposing anything:
+
+- Folder: <absolute path>. Read its AGENTS.md, or its README if there is none.
+- Where it stopped: <one sentence with the real state, including anything unpushed>.
+- Next: <the first concrete action, with its path or its exact command>.
+- Watch out for: <the one trap from today, in a line. Drop the line if there was none.>
+
+Confirm the state with `git status` and tell me if anything does not match the above.
+```
+
 ## Style rules
 
 - Complete short sentences. No telegraphic fragments, no chains of arrows, no walls of
@@ -132,7 +178,9 @@ already solved, solved again from scratch, is the most expensive thing in a long
 
 ## Arguments
 
-- `/finito short`: summary and next steps at their minimum, plus the handoff block. Step 2 is
-  never skipped, in any variant, because it is the only part the next session cannot redo.
+- `/finito short`: summary and next steps at their minimum, plus both blocks, with the resume
+  block down to its four lines. Step 2 is never skipped, in any variant, because it is the
+  only part the next session cannot redo.
 - `/finito handoff`: the handoff block alone, for when the summary is not needed and the
   context is about to be compacted.
+- `/finito resume`: the resume block alone, for leaving it here and coming back another day.

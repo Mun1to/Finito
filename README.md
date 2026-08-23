@@ -1,8 +1,8 @@
 # Finito
 
-Ends a coding session properly. You get a summary you can actually read, and the agent gets a
-**handoff block**: paste it into tomorrow's session and it carries on exactly where this one
-stopped.
+Ends a coding session properly. You get a summary you can actually read, and the agent gets
+two blocks to carry on exactly where this one stopped: a **handoff** to paste right after
+`/compact`, and a **resume** block for the day you come back to it cold.
 
 ## Install
 
@@ -40,9 +40,10 @@ answers in whatever language you are writing in.
 
 | Command | What you get |
 | :--- | :--- |
-| `/finito` | The full closing: summary, next steps, what got written down, handoff block. |
-| `/finito short` | The minimum, plus the handoff block. |
-| `/finito handoff` | The handoff block on its own. |
+| `/finito` | The full closing: summary, next steps, what got written down, both blocks. |
+| `/finito short` | The minimum, plus both blocks. |
+| `/finito handoff` | The handoff block on its own, for compacting right now. |
+| `/finito resume` | The resume block on its own, for coming back another day. |
 
 ## What comes out
 
@@ -57,7 +58,8 @@ answers in whatever language you are writing in.
 1. Finish `sandbox/profiles.py`, the launcher never receives the profile path.
 ```
 
-And then the part that actually matters, ready to paste into the next session:
+And then the part that actually matters. The handoff, for the session you are compacting
+right now:
 
 ```
 # HANDOFF, Klipse session, 2026-08-13
@@ -72,6 +74,23 @@ And then the part that actually matters, ready to paste into the next session:
 ## Gotchas
 - Windows releases ClipCursor on every display change, so it has to be reapplied on
   WM_DISPLAYCHANGE. Nothing in the documentation says this.
+```
+
+And the resume block, for the morning you open a brand new session, or a different tool, with
+nothing left of today:
+
+```
+# RESUME, Klipse (saved 2026-08-13)
+
+Picking this back up. Before proposing anything:
+
+- Folder: `C:\projects\Klipse`. Read its AGENTS.md, or its README if there is none.
+- Where it stopped: hotkey done and committed, Sandbox profiles half written, 3 commits
+  unpushed on `main`.
+- Next: finish `klipse/sandbox/profiles.py`, the launcher never receives the profile path.
+- Watch out for: ClipCursor is dropped on every display change, reapply on WM_DISPLAYCHANGE.
+
+Confirm the state with `git status` and tell me if anything does not match the above.
 ```
 
 ## Why it exists

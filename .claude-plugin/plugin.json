@@ -1,7 +1,7 @@
 {
   "name": "finito",
-  "description": "Closes a working session with a summary you can read and a handoff block the next session resumes from.",
-  "version": "0.1.0",
+  "description": "Closes a working session with a summary you can read, a handoff block for compacting now and a resume block for coming back another day.",
+  "version": "0.2.0",
   "author": {
     "name": "Mun1to",
     "url": "https://github.com/Mun1to"
