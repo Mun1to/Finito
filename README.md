@@ -14,7 +14,7 @@ Inside Claude Code, two lines:
 ```
 
 That is it. No cloning, no symlinks, no config files to edit. If the install summary says
-`Run /reload-plugins to activate`, run it.
+`Run /reload-plugins to apply`, Claude Code reloads by itself. If it warns and leaves the plugin pending, run `/reload-plugins --force`.
 
 <details>
 <summary>Prefer to install it by hand?</summary>
