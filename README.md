@@ -16,6 +16,12 @@ Inside Claude Code, two lines:
 That is it. No cloning, no symlinks, no config files to edit. If the install summary says
 `Run /reload-plugins to apply`, Claude Code reloads by itself. If it warns and leaves the plugin pending, run `/reload-plugins --force`.
 
+With any other agent, through the [skills.sh](https://skills.sh) registry:
+
+```bash
+npx skills add Mun1to/Finito
+```
+
 <details>
 <summary>Prefer to install it by hand?</summary>
 
